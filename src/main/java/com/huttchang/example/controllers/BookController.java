@@ -1,11 +1,14 @@
 package com.huttchang.example.controllers;
 
 import com.huttchang.example.models.Book;
+import com.huttchang.example.services.BookService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -16,8 +19,15 @@ import java.util.List;
  */
 
 @RestController()
-@RequestMapping("books")
+@RequestMapping("/books")
 public class BookController {
+
+
+    @Resource(name = "KakaoBookService")
+    private BookService kakaoService;
+
+    @Resource(name = "KyoboBookService")
+    private BookService kyoboService;
 
     /**
      * 도서 조회
@@ -25,8 +35,24 @@ public class BookController {
      * @param keyword 검색키워드
      * @return
      */
-    @GetMapping("/")
-    public List<Book> getBookList(String cat, String keyword){
+    @GetMapping
+    public List<Book> getBookList(String cat, String keyword, HttpServletResponse response) {
+        try{
+            kakaoService.search(null);
+        }catch (Exception e){
+
+        }
+        return null;
+    }
+
+    @GetMapping("/kyobo")
+    public List<Book> getBookListByKyoboAPI(String cat, String keyword, HttpServletResponse response) {
+
+        try{
+            kyoboService.search(null);
+        }catch (Exception e){
+
+        }
         return null;
     }
 
@@ -36,7 +62,7 @@ public class BookController {
      * @return
      */
     @GetMapping("/{isbn}")
-    public Book getBookList(@PathVariable("isbn") String isbn){
+    public Book getBookList(@PathVariable("isbn") String isbn) {
         return null;
     }
 
@@ -45,7 +71,7 @@ public class BookController {
      * @return
      */
     @GetMapping("/histories")
-    public List<Book> getHistoryList(){
+    public List<Book> getHistoryList() {
         return null;
     }
 
