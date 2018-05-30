@@ -2,6 +2,7 @@ package com.huttchang.example.providers;
 
 import com.huttchang.example.models.Book;
 import com.huttchang.example.models.Option;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * 작성 및 소유자 : hucloud(huttchang@gmail.com)
  * 최초 생성일   : 2018. 5. 30.
  */
-@Repository("kyoboAPIProvider")
+@Component("kyoboAPIProvider")
 public class KyoboBookAPIProvider implements SearchProvider<Option, Book> {
 
     @Override

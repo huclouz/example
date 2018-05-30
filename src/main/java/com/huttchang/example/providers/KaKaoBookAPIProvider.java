@@ -2,8 +2,17 @@ package com.huttchang.example.providers;
 
 import com.huttchang.example.models.Book;
 import com.huttchang.example.models.Option;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -12,12 +21,28 @@ import java.util.List;
  * 작성 및 소유자 : hucloud(huttchang@gmail.com)
  * 최초 생성일   : 2018. 5. 30.
  */
-@Repository("kakaoAPIProvider")
+@Component("kakaoAPIProvider")
 public class KaKaoBookAPIProvider implements SearchProvider<Option, Book> {
+
+    @Value("${kakao.}")
+    private String kakaoAppKey;
 
     @Override
     public List<Book> search(Option option) throws Exception {
-        System.out.println("KAKAO Search");
+
+        try {
+            RestTemplate template = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.AUTHORIZATION, String.format("KakaoAK %s", kakaoAppKey));
+            RequestEntity httpEntity
+                    = new RequestEntity(
+                            headers, HttpMethod.GET, new URI("https://dapi.kakao.com/v2/search/book?catagory=15&query="+URLEncoder.encode("나의 꿈", "utf-8")+"&target=title&size=50"));
+            ResponseEntity<HashMap> t = template.exchange(httpEntity, HashMap.class);
+            System.out.println(t.getBody());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 
