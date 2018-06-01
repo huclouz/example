@@ -2,10 +2,7 @@ package com.huttchang.example.controllers;
 
 import com.huttchang.example.models.Book;
 import com.huttchang.example.services.BookService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +14,7 @@ import java.util.List;
  * 작성 및 소유자 : hucloud
  * 최초 생성일   : 2018. 5. 28.
  */
-
+@CrossOrigin
 @RestController()
 @RequestMapping("/books")
 public class BookController {
@@ -38,9 +35,9 @@ public class BookController {
     @GetMapping
     public List<Book> getBookList(String cat, String keyword, HttpServletResponse response) {
         try{
-            kakaoService.search(null);
-        }catch (Exception e){
-
+            return kakaoService.search(null);
+        }catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }

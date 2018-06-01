@@ -1,18 +1,18 @@
 package com.huttchang.example.providers;
 
 import com.huttchang.example.models.Book;
+import com.huttchang.example.models.KakaoBookResponse;
 import com.huttchang.example.models.Option;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,7 +24,10 @@ import java.util.List;
 @Component("kakaoAPIProvider")
 public class KaKaoBookAPIProvider implements SearchProvider<Option, Book> {
 
-    @Value("${kakao.}")
+    @Value("${api.kakako.bookapi.uri}")
+    private String kakaoAPIHost;
+
+    @Value("${api.kakako.api.appkey}")
     private String kakaoAppKey;
 
     @Override
@@ -36,9 +39,9 @@ public class KaKaoBookAPIProvider implements SearchProvider<Option, Book> {
             headers.add(HttpHeaders.AUTHORIZATION, String.format("KakaoAK %s", kakaoAppKey));
             RequestEntity httpEntity
                     = new RequestEntity(
-                            headers, HttpMethod.GET, new URI("https://dapi.kakao.com/v2/search/book?catagory=15&query="+URLEncoder.encode("나의 꿈", "utf-8")+"&target=title&size=50"));
-            ResponseEntity<HashMap> t = template.exchange(httpEntity, HashMap.class);
-            System.out.println(t.getBody());
+                            headers, HttpMethod.GET, new URI(kakaoAPIHost+"?query="+URLEncoder.encode("나의 꿈", "utf-8")+"&target=title&size=50"));
+            ResponseEntity<KakaoBookResponse> t = template.exchange(httpEntity, KakaoBookResponse.class);
+            return t.getBody().getDocuments();
         }catch (Exception e) {
             e.printStackTrace();
         }

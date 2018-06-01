@@ -1,5 +1,8 @@
 package com.huttchang.example.services;
 
+import com.huttchang.example.providers.SearchProvider;
+
+import javax.xml.bind.SchemaOutputResolver;
 import java.util.List;
 
 /**
@@ -13,5 +16,6 @@ public interface BookService<O, R> {
     List<R> search(O option) throws Exception;
 
     R detail(String key, String value);
+
 
 }

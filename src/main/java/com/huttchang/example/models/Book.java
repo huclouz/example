@@ -1,6 +1,10 @@
 package com.huttchang.example.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * 프로젝트명    : example
@@ -9,14 +13,20 @@ import lombok.Data;
  * 최초 생성일   : 2018. 5. 30.
  */
 @Data
+@JsonIgnoreProperties
 public class Book {
 
-    private String name;
-    private String writer;
-    private String isbn;
+    private String title;
+    private String [] authors;
+    private String barcode;
 
-    public Book(String name, String writer) {
-        this.name = name;
-        this.writer = writer;
-    }
+    @JsonProperty("category")
+    private String cat;
+    private String contents;
+    private Date datetime;
+    private String isbn;
+    private float price;
+    @JsonProperty("sale_price")
+    private float salePrice;
+
 }

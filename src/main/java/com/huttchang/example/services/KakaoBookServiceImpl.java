@@ -22,8 +22,8 @@ public class KakaoBookServiceImpl implements BookService<Option, Book> {
 
     @Override
     public List<Book> search(Option option) throws Exception {
-        kakaoProvider.search(option);
-        return null;
+        // save history
+        return kakaoProvider.search(option);
     }
 
     @Override
