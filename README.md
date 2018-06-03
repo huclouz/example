@@ -42,10 +42,12 @@ $ java -jar build/libs/huttchang-0.0.1-SNAPSHOT.war 명령을 통하여 실행
   구동을 해야하기때문에 DB는 공개해둔 상태입니다.
 ```
 
-# RestAPI 한눈에 보기
+## RestAPI 한눈에 보기
 ```
 http://localhost:8080/swagger-ui.html로 접속하시면 RestAPI가 한눈에 보입니다.
 ```
 
-
+## 사용법
+- 로그인 없이는 책 검색, 상세보기, 구매링크로 이동하는 기능이 가능합니다.
+- 로그인 후에는 검색 창 옆의 검색어 히스토리, 북마크의 기능이 사용 가능합니다.
 
