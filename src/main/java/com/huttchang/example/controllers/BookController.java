@@ -1,11 +1,13 @@
 package com.huttchang.example.controllers;
 
 import com.huttchang.example.models.Book;
+import com.huttchang.example.models.BookMark;
 import com.huttchang.example.models.KakaoParameter;
 import com.huttchang.example.services.BookService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.util.List;
@@ -24,9 +26,6 @@ public class BookController {
 
     @Resource(name = "KakaoBookService")
     private BookService kakaoService;
-
-    @Resource(name = "KyoboBookService")
-    private BookService kyoboService;
 
     /**
      * 도서 조회
@@ -71,14 +70,33 @@ public class BookController {
         return null;
     }
 
+    /**
+     * 북마크 조회
+     * @return
+     */
+    @GetMapping("/marks")
+    public List<BookMark> getBookMarks() {
+        return kakaoService.findBookMarksByUserId(0);
+    }
 
     /**
      * 북마크 추가
+     * @param bookInfo
      * @return
      */
     @PostMapping("/marks")
-    public List<Book> addBookMarks() {
-        return null;
+    public void addBookMarks(BookMark bookInfo) {
+        kakaoService.addBookMark(bookInfo);
+    }
+
+    /**
+     * 북마크 제거
+     * @param bookInfo
+     * @return
+     */
+    @DeleteMapping("/marks/{bookmarkId}")
+    public void delBookMarks(@PathVariable int bookmarkId) {
+        kakaoService.deleteBookMark(bookmarkId);
     }
 
 

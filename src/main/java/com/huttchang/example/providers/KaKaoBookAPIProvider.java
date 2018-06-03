@@ -2,7 +2,7 @@ package com.huttchang.example.providers;
 
 import com.huttchang.example.models.Book;
 import com.huttchang.example.models.KakaoBookResponse;
-import com.huttchang.example.models.Option;
+import com.huttchang.example.models.Parameter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,7 +21,7 @@ import java.util.List;
  * 최초 생성일   : 2018. 5. 30.
  */
 @Component("kakaoAPIProvider")
-public class KaKaoBookAPIProvider implements SearchProvider<Option, Book> {
+public class KaKaoBookAPIProvider implements SearchProvider<Parameter, Book> {
 
     @Value("${api.kakako.bookapi.uri}")
     private String kakaoAPIHost;
@@ -30,7 +30,7 @@ public class KaKaoBookAPIProvider implements SearchProvider<Option, Book> {
     private String kakaoAppKey;
 
     @Override
-    public List<Book> search(Option option) throws Exception {
+    public List<Book> search(Parameter option) throws Exception {
 
         try {
             RestTemplate template = new RestTemplate();

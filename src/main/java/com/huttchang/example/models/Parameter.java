@@ -2,7 +2,6 @@ package com.huttchang.example.models;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 프로젝트명    : example
@@ -11,11 +10,11 @@ import java.util.Set;
  * 최초 생성일   : 2018. 5. 30.
  */
 
-public abstract class Option<K, V> {
+public abstract class Parameter<K, V> {
 
     private HashMap<K, V> mOptionStorage = new HashMap<>();
 
-    public Option addParam(K key, V value) {
+    public Parameter addParam(K key, V value) {
         mOptionStorage.put(key, value);
         return this;
     }

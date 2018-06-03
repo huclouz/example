@@ -1,9 +1,8 @@
 package com.huttchang.example.providers;
 
 import com.huttchang.example.models.Book;
-import com.huttchang.example.models.Option;
+import com.huttchang.example.models.Parameter;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -14,10 +13,10 @@ import java.util.List;
  * 최초 생성일   : 2018. 5. 30.
  */
 @Component("kyoboAPIProvider")
-public class KyoboBookAPIProvider implements SearchProvider<Option, Book> {
+public class KyoboBookAPIProvider implements SearchProvider<Parameter, Book> {
 
     @Override
-    public List<Book> search(Option option) throws Exception {
+    public List<Book> search(Parameter option) throws Exception {
         System.out.println("Kyobo Search");
         return null;
     }

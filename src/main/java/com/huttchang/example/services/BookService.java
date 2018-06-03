@@ -1,9 +1,8 @@
 package com.huttchang.example.services;
 
-import com.huttchang.example.models.Option;
-import com.huttchang.example.providers.SearchProvider;
+import com.huttchang.example.models.BookMark;
+import com.huttchang.example.models.Parameter;
 
-import javax.xml.bind.SchemaOutputResolver;
 import java.util.List;
 
 /**
@@ -12,11 +11,14 @@ import java.util.List;
  * 작성 및 소유자 : hucloud(huttchang@gmail.com)
  * 최초 생성일   : 2018. 5. 30.
  */
-public interface BookService<O extends Option, R> {
+public interface BookService<O extends Parameter, R> {
 
     List<R> search(O option) throws Exception;
 
-    R detail(String key, String value);
+    void addBookMark(BookMark book);
 
+    void deleteBookMark(int bookmarkId);
+
+    List<BookMark> findBookMarksByUserId(int userId);
 
 }

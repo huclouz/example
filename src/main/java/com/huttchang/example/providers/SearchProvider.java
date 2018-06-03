@@ -1,6 +1,6 @@
 package com.huttchang.example.providers;
 
-import com.huttchang.example.models.Option;
+import com.huttchang.example.models.Parameter;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * 최초 생성일   : 2018. 5. 28.
  *
  */
-public interface SearchProvider<O extends Option, R> {
+public interface SearchProvider<O extends Parameter, R> {
 
     List<R> search(O option) throws Exception;
 
