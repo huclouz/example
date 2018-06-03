@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
+    /**
+     * 첫페이지
+     * @return View
+     * @throws Exception
+     */
     @GetMapping("/")
     public String welcome() throws Exception {
-        System.out.println("welcome");
         return "index";
     }
 }

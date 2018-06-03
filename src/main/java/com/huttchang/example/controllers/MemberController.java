@@ -45,30 +45,40 @@ public class MemberController {
         }
     }
 
+    /**
+     * 로그인
+     * @param member (이메일, 비밀번호)
+     * @param request
+     * @return
+     */
     @PostMapping("/login")
     public ResponseEntity<Member> login(@RequestBody  Member member, HttpServletRequest request) {
         try {
-            Enumeration<String> header = request.getHeaderNames();
-            while ( header.hasMoreElements()) {
-                String name = header.nextElement();
-                System.out.println(String.format("%s=%s", name, request.getHeader(name)) );
-            }
-
+            // db에서 멤버 조회
             Member loggedMember = memberService.login(member);
+            // 멤버가 없다면
             if ( member == null ) {
+                // 인증되지 않은 코드 리턴
                 return new ResponseEntity<Member>(HttpStatus.UNAUTHORIZED);
             }
+            // 인증된 사용자의 상태가 정상적이라면
             if ( loggedMember.getStatus() == Member.MemberStatusCode.OK.ordinal() ) {
+                // 토큰을 발행
                 String token = jwtService.create("jwt", loggedMember);
                 HttpHeaders headers = new HttpHeaders();
+                // 헤더에 정보와 함께 Response
                 headers.add("Authorization",token);
                 return new ResponseEntity<Member>(loggedMember, headers,HttpStatus.OK);
             }
+            // 인증에 실패한 경우
             else if ( loggedMember.getStatus() == Member.MemberStatusCode.AUTH_FAIL.ordinal())
+                // 인증 실패 코드리턴
                 return new ResponseEntity<Member>(HttpStatus.UNAUTHORIZED);
             else if ( loggedMember.getStatus() == Member.MemberStatusCode.LOCK.ordinal())
+                // 접근불가 코드 리턴
                 return new ResponseEntity<Member>(HttpStatus.FORBIDDEN);
         }catch (Exception e){
+            // 다른 얘기치 못한 예외 발생 시 내부서버오류 코드 리턴
             return new ResponseEntity<Member>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return null;

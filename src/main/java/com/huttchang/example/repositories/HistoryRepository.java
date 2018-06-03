@@ -13,7 +13,12 @@ import java.util.List;
  * 최초 생성일   : 2018. 6. 3.
  */
 public interface HistoryRepository extends JpaRepository<History, Integer> {
-
+    /**
+     * 나의 히스토리 조회
+     * @param userId
+     * @param sort
+     * @return
+     */
     List<History> findByUserId(int userId, Sort sort);
 
 }

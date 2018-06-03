@@ -10,6 +10,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * 최초 생성일   : 2018. 6. 3.
  */
 public interface MemberRepository extends JpaRepository<Member, Integer>{
-
+    /**
+     * 이메일로 사용자를 조회
+     * @param email
+     * @return
+     */
     Member findByEmail(String email);
 }

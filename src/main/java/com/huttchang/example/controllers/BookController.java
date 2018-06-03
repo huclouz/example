@@ -31,11 +31,14 @@ public class BookController {
     private JWTService jwtService;
 
     /**
-     * 도서 조회
-     * @param cat 검색카테고리
-     * @param keyword 검색키워드
-     * @param pageSize 목록 수량
-     * @return
+     * 도서 목록 조회
+     * @param cat 카테고리
+     * @param keyword 검색어
+     * @param itemCount 아이템 조회 수
+     * @param pageNo 현재 페이지 번호
+     * @param model Response할 모델데이터
+     * @param token 토큰이 있는 경우의 토큰데이터(header)
+     * @return 도서정보
      */
     @GetMapping("cat/{cat}/keyword/{keyword}/size/{itemCount}/page/{pageNo}")
     public ResponseEntity<Model> getBookList(
@@ -122,9 +125,8 @@ public class BookController {
     }
 
     /**
-     * 북마크 제거
-     * @param bookInfo
-     * @return
+     * 북마크의 번호를 이용하여 북마크 제거
+     * @param bookmarkId 북마크의 식별자
      */
     @DeleteMapping("/marks/{bookmarkId}")
     public void delBookMarks(@PathVariable int bookmarkId) {
@@ -133,7 +135,8 @@ public class BookController {
 
 
     /**
-     * 검색히스토리 조회
+     * 검색 히스토리 조회
+     * @param token 토큰이 있는 경우에만 수행
      * @return
      */
     @GetMapping("/histories")

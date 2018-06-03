@@ -23,13 +23,19 @@ import java.util.List;
  */
 @Component("kakaoAPIProvider")
 public class KaKaoBookAPIProvider implements SearchProvider<KakaoParameter, Book> {
-
+    // 카카오호스트
     @Value("${api.kakako.bookapi.uri}")
     private String kakaoAPIHost;
-
+    // 카카오 appKey
     @Value("${api.kakako.api.appkey}")
     private String kakaoAppKey;
 
+    /**
+     * 카카오 서치 API
+     * @param option
+     * @return
+     * @throws Exception
+     */
     @Override
     public List<Book> search(KakaoParameter option) throws Exception {
 
@@ -51,6 +57,13 @@ public class KaKaoBookAPIProvider implements SearchProvider<KakaoParameter, Book
         return null;
     }
 
+    /**
+     * ISBN 사용시 여러개의 데이터 출력될 수 있으므로 위의 search 사용
+     * @param key
+     * @param value
+     * @return
+     */
+    @Deprecated
     @Override
     public Book detail(String key,String value) {
         return null;

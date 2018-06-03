@@ -14,17 +14,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "histories")
 public class History {
-
+    // 최근검색 아이디
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    // 최근검색한 사람의 아이디
     @Column(name = "user_id")
     private int userId;
-
+    // 최근 검색한 검색어
     @Column(name = "search_keyword")
     private String searchKeyword;
-
+    // 검색한 카테고리
     @Column(name = "search_category")
     private String searchCategory;
 

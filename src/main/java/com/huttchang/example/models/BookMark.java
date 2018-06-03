@@ -14,13 +14,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "bookmarks")
 public class BookMark {
+    // 북마크 번호
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    // 사용자 번호
     @Column(name = "user_id")
     private int userId;
+    // 북마크한 ISBN번호
     @Column(name = "book_isbn")
     private String bookIsbn;
+    // 북마크한 책 제목
     @Column(name = "book_title")
     private String bookTitle;
 }
