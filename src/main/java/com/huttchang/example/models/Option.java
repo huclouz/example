@@ -1,8 +1,8 @@
 package com.huttchang.example.models;
 
-import lombok.Data;
-
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 프로젝트명    : example
@@ -10,11 +10,26 @@ import java.util.HashMap;
  * 작성 및 소유자 : hucloud(huttchang@gmail.com)
  * 최초 생성일   : 2018. 5. 30.
  */
-@Data
-public abstract class Option {
 
-    private HashMap<String, ?> mOptionStorage = new HashMap<>();
+public abstract class Option<K, V> {
 
-    public abstract Option addParam();
+    private HashMap<K, V> mOptionStorage = new HashMap<>();
+
+    public Option addParam(K key, V value) {
+        mOptionStorage.put(key, value);
+        return this;
+    }
+
+    public V getParamter(K key) {
+        return mOptionStorage.get(key);
+    }
+
+    public String generateQueryString() {
+        String queryString = "";
+        for (Map.Entry kvEntry : mOptionStorage.entrySet()) {
+            queryString += String.format("&%s=%s", kvEntry.getKey(), kvEntry.getValue());
+        }
+        return queryString;
+    }
 
 }

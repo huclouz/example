@@ -22,8 +22,7 @@ public class KyoboBookServiceImpl implements BookService<Option, Book> {
 
     @Override
     public List<Book> search(Option option) throws Exception {
-        kyoboProvider.search(option);
-        return null;
+        return kyoboProvider.search(option);
     }
 
     @Override

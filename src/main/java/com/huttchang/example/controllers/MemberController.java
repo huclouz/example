@@ -1,6 +1,6 @@
 package com.huttchang.example.controllers;
 
-import org.aspectj.weaver.Member;
+import com.huttchang.example.models.Member;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,15 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
  * 최초 생성일   : 2018. 5. 30.
  */
 @RestController()
-@RequestMapping("members")
+@RequestMapping("/members")
 public class MemberController {
 
     /**
      * 회원가입
      * @param member
      */
-    @PostMapping("/signup")
+    @PostMapping("signup")
     public void signUp(Member member) {
+
+    }
+
+    @PostMapping("/login")
+    public void login(Member member) {
 
     }
 }

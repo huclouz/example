@@ -28,5 +28,8 @@ public class Book {
     private float price;
     @JsonProperty("sale_price")
     private float salePrice;
-
+    private String thumbnail;
+    private String status;
+    private String url;
+    private String publisher;
 }

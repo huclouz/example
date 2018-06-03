@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class KaKaoBookAPIProvider implements SearchProvider<Option, Book> {
             headers.add(HttpHeaders.AUTHORIZATION, String.format("KakaoAK %s", kakaoAppKey));
             RequestEntity httpEntity
                     = new RequestEntity(
-                            headers, HttpMethod.GET, new URI(kakaoAPIHost+"?query="+URLEncoder.encode("나의 꿈", "utf-8")+"&target=title&size=50"));
+                            headers, HttpMethod.GET, new URI(kakaoAPIHost+"?"+option.generateQueryString()));
             ResponseEntity<KakaoBookResponse> t = template.exchange(httpEntity, KakaoBookResponse.class);
             return t.getBody().getDocuments();
         }catch (Exception e) {
