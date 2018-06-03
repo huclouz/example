@@ -17,15 +17,20 @@ import java.util.Date;
 @Table(name = "users")
 public class Member {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String email;
     private String name;
     private String password;
 
     @Column(name = "is_verify")
-    private boolean isVerify;
+    private int status;
 
     @Column(name = "crt_date")
     private Date createDate;
+
+    public enum MemberStatusCode {
+        AUTH_FAIL, LOCK, OK
+    }
+
 }

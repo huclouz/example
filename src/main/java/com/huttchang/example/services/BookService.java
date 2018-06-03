@@ -1,6 +1,7 @@
 package com.huttchang.example.services;
 
 import com.huttchang.example.models.BookMark;
+import com.huttchang.example.models.History;
 import com.huttchang.example.models.Parameter;
 
 import java.util.List;
@@ -20,5 +21,9 @@ public interface BookService<O extends Parameter, R> {
     void deleteBookMark(int bookmarkId);
 
     List<BookMark> findBookMarksByUserId(int userId);
+
+    List<History> findHistoryByUserId(int userid);
+
+    void addSearchHistory(History history);
 
 }

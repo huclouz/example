@@ -2,6 +2,7 @@ package com.huttchang.example.services;
 
 import com.huttchang.example.models.Book;
 import com.huttchang.example.models.BookMark;
+import com.huttchang.example.models.History;
 import com.huttchang.example.models.Parameter;
 import com.huttchang.example.providers.SearchProvider;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,16 @@ public class KyoboBookServiceImpl implements BookService<Parameter, Book> {
 
     @Override
     public void deleteBookMark(int bookmarkId) {
+
+    }
+
+    @Override
+    public List<History> findHistoryByUserId(int userid) {
+        return null;
+    }
+
+    @Override
+    public void addSearchHistory(History history) {
 
     }
 }

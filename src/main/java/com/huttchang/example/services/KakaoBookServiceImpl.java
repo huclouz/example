@@ -1,10 +1,9 @@
 package com.huttchang.example.services;
 
-import com.huttchang.example.models.Book;
-import com.huttchang.example.models.BookMark;
-import com.huttchang.example.models.Parameter;
+import com.huttchang.example.models.*;
 import com.huttchang.example.providers.SearchProvider;
 import com.huttchang.example.repositories.BookRepository;
+import com.huttchang.example.repositories.HistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ import java.util.List;
  * 최초 생성일   : 2018. 5. 30.
  */
 @Service("KakaoBookService")
-public class KakaoBookServiceImpl implements BookService<Parameter, Book> {
+public class KakaoBookServiceImpl implements BookService<KakaoParameter, Book> {
 
     @Resource(name="kakaoAPIProvider")
     private SearchProvider kakaoProvider;
@@ -26,8 +25,11 @@ public class KakaoBookServiceImpl implements BookService<Parameter, Book> {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private HistoryRepository historyRepository;
+
     @Override
-    public List<Book> search(Parameter option) throws Exception {
+    public List<Book> search(KakaoParameter option) throws Exception {
         // save history
         return kakaoProvider.search(option);
     }
@@ -46,4 +48,16 @@ public class KakaoBookServiceImpl implements BookService<Parameter, Book> {
     public List<BookMark> findBookMarksByUserId(int userId) {
         return bookRepository.findBookMarksByUserId(userId);
     }
+
+    @Override
+    public void addSearchHistory(History history) {
+        System.out.println( "called addSearchHistory ");
+        historyRepository.save(history);
+    }
+
+    @Override
+    public List<History> findHistoryByUserId(int userId) {
+        return historyRepository.findByUserId(userId);
+    }
+
 }

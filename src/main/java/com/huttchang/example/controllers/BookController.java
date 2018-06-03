@@ -2,13 +2,16 @@ package com.huttchang.example.controllers;
 
 import com.huttchang.example.models.Book;
 import com.huttchang.example.models.BookMark;
+import com.huttchang.example.models.History;
 import com.huttchang.example.models.KakaoParameter;
 import com.huttchang.example.services.BookService;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -19,10 +22,9 @@ import java.util.List;
  * 최초 생성일   : 2018. 5. 28.
  */
 @CrossOrigin
-@RestController()
+@RestController
 @RequestMapping("/books")
 public class BookController {
-
 
     @Resource(name = "KakaoBookService")
     private BookService kakaoService;
@@ -34,18 +36,39 @@ public class BookController {
      * @param pageSize 목록 수량
      * @return
      */
-    @GetMapping("cat/{cat}/keyword/{keyword}/size/{itemCount}")
-    public List<Book> getBookList(
+    @GetMapping("cat/{cat}/keyword/{keyword}/size/{itemCount}/page/{pageNo}")
+    public ResponseEntity<Model> getBookList(
             @PathVariable String cat, @PathVariable String keyword,
-            @PathVariable String itemCount, HttpServletResponse response) {
+            @PathVariable String itemCount, @PathVariable String pageNo, Model model) {
         try{
             KakaoParameter kakaoBookAPIParameter = new KakaoParameter();
             kakaoBookAPIParameter.addParam(KakaoParameter.ParameterKey.query.name(), URLEncoder.encode(keyword, "utf-8"));
             kakaoBookAPIParameter.addParam(KakaoParameter.ParameterKey.target.name(), cat);
             kakaoBookAPIParameter.addParam(KakaoParameter.ParameterKey.size.name(), itemCount);
-            return kakaoService.search(kakaoBookAPIParameter);
-        }catch (Exception e) {
+            kakaoBookAPIParameter.addParam(KakaoParameter.ParameterKey.page.name(), pageNo);
+
+            model.addAttribute("data", kakaoService.search(kakaoBookAPIParameter));
+            model.addAttribute("isEnd", kakaoBookAPIParameter.isEnd());
+            model.addAttribute("totalCount", kakaoBookAPIParameter.getTotalCount());
+            model.addAttribute("keyword", keyword);
+            System.out.println("pageNo : " + pageNo);
+            System.out.println("totalCount : " + kakaoBookAPIParameter.getTotalCount());
+            System.out.println("isEnd : " + kakaoBookAPIParameter.isEnd());
+            return new ResponseEntity<Model>(model, HttpStatus.OK);
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            // 인증정보가 있다면 히스토리 추가
+            try {
+                History his = new History();
+                his.setSearchCategory(cat);
+                his.setSearchKeyword(keyword);
+                his.setUserId(0);
+                kakaoService.addSearchHistory(his);
+            }catch (DataIntegrityViolationException e){
+
+            }
+
         }
         return null;
     }
@@ -106,7 +129,7 @@ public class BookController {
      */
     @GetMapping("/histories")
     public List<Book> getHistoryList() {
-        return null;
+        return kakaoService.findHistoryByUserId(0);
     }
 
 }

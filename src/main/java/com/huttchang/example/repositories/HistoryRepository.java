@@ -1,7 +1,9 @@
 package com.huttchang.example.repositories;
 
-import com.huttchang.example.models.Member;
+import com.huttchang.example.models.History;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * 프로젝트명    : example
@@ -9,7 +11,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * 작성 및 소유자 : hucloud(huttchang@gmail.com)
  * 최초 생성일   : 2018. 6. 3.
  */
-public interface MemberRepository extends JpaRepository<Member, Integer>{
+public interface HistoryRepository extends JpaRepository<History, Integer> {
 
-    Member findByEmail(String email);
+    List<History> findByUserId(int userId);
+
 }
