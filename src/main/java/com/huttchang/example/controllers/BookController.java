@@ -1,10 +1,9 @@
 package com.huttchang.example.controllers;
 
-import com.huttchang.example.models.Book;
-import com.huttchang.example.models.BookMark;
-import com.huttchang.example.models.History;
-import com.huttchang.example.models.KakaoParameter;
+import com.huttchang.example.models.*;
 import com.huttchang.example.services.BookService;
+import com.huttchang.example.services.JWTService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +20,15 @@ import java.util.List;
  * 작성 및 소유자 : hucloud
  * 최초 생성일   : 2018. 5. 28.
  */
-@CrossOrigin
 @RestController
 @RequestMapping("/books")
 public class BookController {
 
     @Resource(name = "KakaoBookService")
     private BookService kakaoService;
+
+    @Autowired
+    private JWTService jwtService;
 
     /**
      * 도서 조회
@@ -39,7 +40,8 @@ public class BookController {
     @GetMapping("cat/{cat}/keyword/{keyword}/size/{itemCount}/page/{pageNo}")
     public ResponseEntity<Model> getBookList(
             @PathVariable String cat, @PathVariable String keyword,
-            @PathVariable String itemCount, @PathVariable String pageNo, Model model) {
+            @PathVariable String itemCount, @PathVariable String pageNo, Model model,
+            @RequestHeader(name = "Authorization", required = false) String token) {
         try{
             KakaoParameter kakaoBookAPIParameter = new KakaoParameter();
             kakaoBookAPIParameter.addParam(KakaoParameter.ParameterKey.query.name(), URLEncoder.encode(keyword, "utf-8"));
@@ -51,20 +53,21 @@ public class BookController {
             model.addAttribute("isEnd", kakaoBookAPIParameter.isEnd());
             model.addAttribute("totalCount", kakaoBookAPIParameter.getTotalCount());
             model.addAttribute("keyword", keyword);
-            System.out.println("pageNo : " + pageNo);
-            System.out.println("totalCount : " + kakaoBookAPIParameter.getTotalCount());
-            System.out.println("isEnd : " + kakaoBookAPIParameter.isEnd());
             return new ResponseEntity<Model>(model, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             // 인증정보가 있다면 히스토리 추가
             try {
-                History his = new History();
-                his.setSearchCategory(cat);
-                his.setSearchKeyword(keyword);
-                his.setUserId(0);
-                kakaoService.addSearchHistory(his);
+                if (token!=null) {
+                    System.out.println(token);
+                    Member member = jwtService.getJWTData(token);
+                    History his = new History();
+                    his.setSearchCategory(cat);
+                    his.setSearchKeyword(keyword);
+                    his.setUserId(member.getId());
+                    kakaoService.addSearchHistory(his);
+                }
             }catch (DataIntegrityViolationException e){
 
             }
@@ -81,7 +84,6 @@ public class BookController {
     @GetMapping("{isbn}")
     public List<Book> getBookDetail(@PathVariable String isbn) {
         try{
-            System.out.println("detail : " + isbn);
             KakaoParameter kakaoBookAPIParameter = new KakaoParameter();
             kakaoBookAPIParameter.addParam(KakaoParameter.ParameterKey.query.name(), URLEncoder.encode(isbn, "utf-8"));
             kakaoBookAPIParameter.addParam(KakaoParameter.ParameterKey.target.name(), "isbn");
@@ -98,8 +100,12 @@ public class BookController {
      * @return
      */
     @GetMapping("/marks")
-    public List<BookMark> getBookMarks() {
-        return kakaoService.findBookMarksByUserId(0);
+    public List<BookMark> getBookMarks(@RequestHeader(name = "Authorization", required = false) String token) {
+        if ( token != null ) {
+            Member member = jwtService.getJWTData(token);
+            return kakaoService.findBookMarksByUserId(member.getId());
+        }
+        return null;
     }
 
     /**
@@ -108,8 +114,11 @@ public class BookController {
      * @return
      */
     @PostMapping("/marks")
-    public void addBookMarks(BookMark bookInfo) {
-        kakaoService.addBookMark(bookInfo);
+    public void addBookMarks(BookMark bookInfo, @RequestHeader(name = "Authorization", required = false) String token) {
+        if ( token != null ) {
+            bookInfo.setUserId(jwtService.getJWTData(token).getId());
+            kakaoService.addBookMark(bookInfo);
+        }
     }
 
     /**
@@ -128,8 +137,11 @@ public class BookController {
      * @return
      */
     @GetMapping("/histories")
-    public List<Book> getHistoryList() {
-        return kakaoService.findHistoryByUserId(0);
+    public List<Book> getHistoryList(@RequestHeader(name = "Authorization", required = false) String token) {
+        if ( token != null ) {
+            return kakaoService.findHistoryByUserId(jwtService.getJWTData(token).getId());
+        }
+        return null;
     }
 
 }

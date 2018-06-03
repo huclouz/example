@@ -14,6 +14,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
 
 group = 'com.huttchang'
 version = '0.0.1-SNAPSHOT'
@@ -28,12 +29,14 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-data-redis')
 	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.apache.tomcat.embed:tomcat-embed-jasper")
 	compile("com.fasterxml.jackson.core:jackson-databind")
 	runtime('mysql:mysql-connector-java')
+	compile("javax.servlet:jstl")
 	compileOnly('org.projectlombok:lombok')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0'
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.2.2'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.2.2'
 }

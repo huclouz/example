@@ -1,5 +1,6 @@
 package com.huttchang.example.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -28,6 +29,9 @@ public class Member {
 
     @Column(name = "crt_date")
     private Date createDate;
+
+    @Transient
+    private String token;
 
     public enum MemberStatusCode {
         AUTH_FAIL, LOCK, OK

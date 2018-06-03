@@ -5,6 +5,7 @@ import com.huttchang.example.providers.SearchProvider;
 import com.huttchang.example.repositories.BookRepository;
 import com.huttchang.example.repositories.HistoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -51,13 +52,12 @@ public class KakaoBookServiceImpl implements BookService<KakaoParameter, Book> {
 
     @Override
     public void addSearchHistory(History history) {
-        System.out.println( "called addSearchHistory ");
         historyRepository.save(history);
     }
 
     @Override
     public List<History> findHistoryByUserId(int userId) {
-        return historyRepository.findByUserId(userId);
+        return historyRepository.findByUserId(userId, new Sort(Sort.Direction.DESC, "id"));
     }
 
 }

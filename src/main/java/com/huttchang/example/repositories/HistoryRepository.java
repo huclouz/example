@@ -1,6 +1,7 @@
 package com.huttchang.example.repositories;
 
 import com.huttchang.example.models.History;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -13,6 +14,6 @@ import java.util.List;
  */
 public interface HistoryRepository extends JpaRepository<History, Integer> {
 
-    List<History> findByUserId(int userId);
+    List<History> findByUserId(int userId, Sort sort);
 
 }
