@@ -5,7 +5,7 @@
 ## 개발 환경
 ### frontend
 - vue 2.2 CLI
-
+- 소스 관리를 위하여 따로 생성 (github URL https://github.com/huclouz/example-front) 
 
 ### backend
 - Language : JAVA 8
