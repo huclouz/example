@@ -1,6 +1,9 @@
 ## Project : example
 ## author : hyuchang, shin
 ## descript : search book
+## 데모페이지
+- http://example.hutt.co.kr/ 실제 도서검색 사이트
+- http://example.hutt.co.kr/swagger-ui.html 도서검색 API 정보조회 사이트
 
 ## 개발 환경
 ### frontend
